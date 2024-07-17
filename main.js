@@ -1,4 +1,7 @@
-import { loader, displayLoading } from "./components/displayLoading";
+import { displayLoading } from "./components/displayLoading.js";
+import { hideLoading } from "./components/hideLoading.js";
+import { hideError } from "./components/hideError.js";
+import { showError } from "./components/showError.js";
 
 const apiKey = "ce4ae11bc17be470cdd99c175534fd05";
 const apiUrl =
@@ -50,16 +53,3 @@ searchBtn.addEventListener("click", () => {
   checkWeather(searchBox.value);
 });
 
-function hideLoading() {
-  loader.classList.remove("display");
-}
-
-function hideError() {
-  document.querySelector(".weather").style.display = "block";
-  document.querySelector(".error").style.display = "none";
-}
-
-function showError() {
-  document.querySelector(".error").style.display = "block";
-  document.querySelector(".weather").style.display = "none";
-}
