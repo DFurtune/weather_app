@@ -7,49 +7,65 @@ const apiKey = "ce4ae11bc17be470cdd99c175534fd05";
 const apiUrl =
   "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
-const searchBox = document.querySelector(".search input");
-const searchBtn = document.querySelector(".search button");
+const searchBox = document.querySelector("#user_input_autocomplete_address");
 const weatherIcon = document.querySelector(".weather-icon");
+const searchForm = document.getElementById("searchForm");
 
 async function checkWeather(city) {
   displayLoading();
 
-  await fetch(apiUrl + city + `&appid=${apiKey}`)
-    .then((response) => response.json())
-    .then((data) => {
-      hideLoading();
+  try {
+    const response = await fetch(`${apiUrl}${city}&appid=${apiKey}`);
+    const data = await response.json();
 
-      document.querySelector(".city").innerHTML =
-        data.name + ", " + data.sys.country;
-      document.querySelector(".temp").innerHTML =
-        Math.round(data.main.temp) + "°C";
-      document.querySelector(".humidity").innerHTML =
-        Math.round(data.main.humidity) + "%";
-      document.querySelector(".wind").innerHTML =
-        Math.round(data.wind.speed) + "km/h";
+    if (response.ok) {
+      hideLoading();
+      document.querySelector(
+        ".city"
+      ).textContent = `${data.name}, ${data.sys.country}`;
+      document.querySelector(".temp").textContent = `${Math.round(
+        data.main.temp
+      )}°C`;
+      document.querySelector(".humidity").textContent = `${Math.round(
+        data.main.humidity
+      )}%`;
+      document.querySelector(".wind").textContent = `${Math.round(
+        data.wind.speed
+      )} km/h`;
 
       switch (data.weather[0].main) {
         case "Clouds":
           weatherIcon.src = "./images/clouds.png";
+          break;
         case "Clear":
           weatherIcon.src = "./images/clear.png";
+          break;
         case "Rain":
           weatherIcon.src = "./images/rain.png";
+          break;
         case "Drizzle":
           weatherIcon.src = "./images/drizzle.png";
+          break;
         case "Mist":
           weatherIcon.src = "./images/mist.png";
+          break;
       }
       hideError();
-    })
-    .catch(() => {
-      showError();
-    });
+    } else {
+      throw new Error("City not found");
+    }
+  } catch (error) {
+    hideLoading();
+    showError();
+  }
 
   searchBox.value = "";
 }
 
-searchBtn.addEventListener("click", () => {
-  checkWeather(searchBox.value);
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const city = searchBox.value.trim();
+  if (city) {
+    checkWeather(city);
+  }
 });
-

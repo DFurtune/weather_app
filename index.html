@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="card">
-      <div class="search">
+      <form class="search" id="searchForm">
         <input
           type="text"
           placeholder="Enter city name"
@@ -16,12 +16,17 @@
           autocomplete="on"
           id="user_input_autocomplete_address"
           name="user_input_autocomplete_address"
+          required
         />
-        <button><img src="./images/search.png" /></button>
-      </div>
+        <button type="submit">
+          <img src="./images/search.png" alt="Search" />
+        </button>
+      </form>
+
       <div class="error">
         <p>Invalid city name</p>
       </div>
+
       <div class="weather">
         <img src="./images/rain.png" class="weather-icon" />
         <h1 class="temp">22°C</h1>
